@@ -140,8 +140,6 @@
 				3119E195181ED54900616471 /* FencesManager.m */,
 				3119E191181EC96C00616471 /* AddGeofenceViewController.h */,
 				3119E192181EC96C00616471 /* AddGeofenceViewController.m */,
-				A0DCC9BD181EEBCA0061FCF1 /* Pin.h */,
-				A0DCC9BE181EEBCA0061FCF1 /* Pin.m */,
 				3119E170181EC09C00616471 /* Images.xcassets */,
 				3119E15C181EC09C00616471 /* Supporting Files */,
 			);
@@ -151,6 +149,8 @@
 		3119E15C181EC09C00616471 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A0DCC9BD181EEBCA0061FCF1 /* Pin.h */,
+				A0DCC9BE181EEBCA0061FCF1 /* Pin.m */,
 				316CE0BE1820644800047428 /* geofences.gpx */,
 				3119E15D181EC09C00616471 /* Geofences-Info.plist */,
 				3119E15E181EC09C00616471 /* InfoPlist.strings */,

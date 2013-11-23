@@ -33,38 +33,11 @@
     
     
 }
-
+#pragma mark Map Set
 -(void)setMapRegion{
     
     
     [self.map setRegion:MKCoordinateRegionMakeWithDistance(self.map.userLocation.coordinate, 700, 800) animated:YES];
-    
-    
-}
-
-- (IBAction)distanceSlide:(UISlider *)sender {
-    
-    
-    
-    if(sender.value<200)
-       [sender setValue:200];
-    else{
-        if ((int)sender.value % 100>50){
-        
-            [sender setValue:sender.value+(100-(int)sender.value % 100) ];
-        
-        }
-        else{
-            
-            [sender setValue:sender.value-((int)sender.value % 100) ];
-        
-        }
-        
-        [self setNewRadius];
-    
-    }
-    
-    self.distanceLabel.text=[NSString stringWithFormat:@"%d m", (int)sender.value];
     
     
 }
@@ -83,6 +56,92 @@
     NSLog(@"%d", self.map.showsUserLocation);
     
 }
+
+#pragma mark Set Geofence
+
+-(void)addPinWithCoordinate:(CLLocationCoordinate2D )coordinate{
+    
+    
+    [self.map removeAnnotations:[self.map annotations]];
+    [self.map removeOverlays:[self.map overlays]];
+    
+    [self.map setRegion:MKCoordinateRegionMakeWithDistance(coordinate, 700, 800) animated:YES];
+    
+    Pin *pin=[[Pin alloc]init];
+    pin.coordinate=coordinate;
+    pin.userInteractionEnabled =NO;
+    pin.canShowCallout=NO;
+    [self.map addAnnotation:pin];
+    
+    MKCircle *circulo=[MKCircle circleWithCenterCoordinate:pin.coordinate radius:self.distanceSlider.value/2];
+    [self.map addOverlay:circulo];
+    
+    
+}
+
+- (IBAction)dropPin:(UILongPressGestureRecognizer *)sender {
+    if(sender.state==UIGestureRecognizerStateBegan){
+        
+        self.distanceSlider.enabled=YES;
+        NSLog(@"x:%f y:%f", [sender locationInView:self.map].x, [sender locationInView:self.map].y);
+        
+        [self addPinWithCoordinate:[self.map convertPoint:[sender locationInView:self.map] toCoordinateFromView:self.map]];
+    }
+    
+}
+
+
+
+-(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay{
+    
+    MKCircleRenderer *circleview=[[MKCircleRenderer alloc]initWithOverlay:overlay];
+    circleview.fillColor=[[UIColor blueColor]colorWithAlphaComponent:0.1];
+    circleview.strokeColor=[UIColor blueColor];
+    
+    circleview.lineWidth=1.0;
+    
+    return circleview;
+    
+}
+
+- (IBAction)distanceSlide:(UISlider *)sender {
+    
+    
+    
+    if(sender.value<200)
+        [sender setValue:200];
+    else{
+        if ((int)sender.value % 100>50){
+            
+            [sender setValue:sender.value+(100-(int)sender.value % 100) ];
+            
+        }
+        else{
+            
+            [sender setValue:sender.value-((int)sender.value % 100) ];
+            
+        }
+        
+        [self setNewRadius];
+        
+    }
+    
+    self.distanceLabel.text=[NSString stringWithFormat:@"%d m", (int)sender.value];
+    
+    
+}
+
+-(void)setNewRadius{
+    
+    
+    MKCircle *circle=[[self.map overlays] objectAtIndex:0];
+    circle=[MKCircle circleWithCenterCoordinate:circle.coordinate radius:self.distanceSlider.value/2];
+    
+    [self.map removeOverlays:[self.map overlays]];
+    [self.map addOverlay:circle];
+    
+}
+
 
 - (IBAction)addFence:(id)sender {
     
@@ -105,6 +164,7 @@
     
 }
 
+#pragma mark Other View methods
 - (IBAction)cancel:(id)sender {
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -113,63 +173,6 @@
 
 - (IBAction)dismissKeyboard:(id)sender {
     [self.identifier resignFirstResponder];
-}
-
-- (IBAction)dropPin:(UILongPressGestureRecognizer *)sender {
-    if(sender.state==UIGestureRecognizerStateBegan){
-        
-        self.distanceSlider.enabled=YES;
-        NSLog(@"x:%f y:%f", [sender locationInView:self.map].x, [sender locationInView:self.map].y);
-        
-        [self addPinWithCoordinate:[self.map convertPoint:[sender locationInView:self.map] toCoordinateFromView:self.map]];
-    }
-        
-}
-
-
-
--(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay{
-    
-    MKCircleRenderer *circleview=[[MKCircleRenderer alloc]initWithOverlay:overlay];
-    circleview.fillColor=[[UIColor blueColor]colorWithAlphaComponent:0.1];
-    circleview.strokeColor=[UIColor blueColor];
-    
-    circleview.lineWidth=1.0;
-    
-    return circleview;
-
-}
-
--(void)setNewRadius{
-    
-    
-    MKCircle *circle=[[self.map overlays] objectAtIndex:0];
-    circle=[MKCircle circleWithCenterCoordinate:circle.coordinate radius:self.distanceSlider.value/2];
-    
-    [self.map removeOverlays:[self.map overlays]];
-    [self.map addOverlay:circle];
-    
-}
-
-
--(void)addPinWithCoordinate:(CLLocationCoordinate2D )coordinate{
-    
-    
-    [self.map removeAnnotations:[self.map annotations]];
-    [self.map removeOverlays:[self.map overlays]];
-    
-    [self.map setRegion:MKCoordinateRegionMakeWithDistance(coordinate, 700, 800) animated:YES];
-    
-    Pin *pin=[[Pin alloc]init];
-    pin.coordinate=coordinate;
-    pin.userInteractionEnabled =NO;
-    pin.canShowCallout=NO;
-    [self.map addAnnotation:pin];
-    
-    MKCircle *circulo=[MKCircle circleWithCenterCoordinate:pin.coordinate radius:self.distanceSlider.value/2];
-    [self.map addOverlay:circulo];
-    
-    
 }
 
 

@@ -15,8 +15,8 @@
 
 @property (nonatomic,strong) FencesManager *fencesManager;
 @property (weak, nonatomic) IBOutlet UITableView *table;
-@property (weak, nonatomic) IBOutlet MKMapView *mapa;
 
 - (IBAction)deleteFence:(UIButton *)sender;
-- (IBAction)stopLoc:(id)sender;
+
+
 @end

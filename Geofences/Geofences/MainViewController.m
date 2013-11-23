@@ -27,13 +27,10 @@
     self.table.dataSource=self;
     self.table.delegate=self;
     
-    	// Do any additional setup after loading the view, typically from a nib.
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     _fences=[[_fencesManager monitoredRegions] allObjects];
-    
-    
     
     NSLog(@"%@", _fences);
    
@@ -42,29 +39,24 @@
     
 }
 
+#pragma mark TableView Delegate
+
 -(NSInteger )tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _fences.count;
 
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+
     UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"celda"];
-    
-    
-    
     cell.textLabel.text=[(CLCircularRegion *)[_fences objectAtIndex:indexPath.row] identifier];
+    
     return cell;
 
 }
 
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    
-    // Dispose of any resources that can be recreated.
-}
-
+#pragma mark IBActions
 - (IBAction)deleteFence:(UIButton *)sender {
     
     UITableViewCell *cell=(UITableViewCell *)[sender superview];
@@ -80,14 +72,7 @@
     
 }
 
-- (IBAction)stopLoc:(id)sender {
-    self.mapa.showsUserLocation=NO;
-}
 
-
-
-
-    
 
 
 @end

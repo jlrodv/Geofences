@@ -29,10 +29,7 @@
     return self;
 }
 
-- (void)dealloc {
-    // Should never be called, but just here for clarity really.
-}
-
+#pragma mark CLLocationManager Delegate for geofences
 -(void)addGeofenceInRegion:(CLRegion *)region{
     NSLog(@"added region");
 
@@ -59,6 +56,7 @@
     
 }
 
+
 -(void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region{
     NSLog(@"exit region %@", region.identifier);
     
@@ -69,6 +67,7 @@
     [self requestStateForRegion:region];
 }
 
+#pragma mark CLLocationManager Delegate
 -(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
     NSLog(@"%@", error);
     
